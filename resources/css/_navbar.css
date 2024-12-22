@@ -1,0 +1,94 @@
+.navbar {
+  background-color: #343a40;
+  background-image: url('nubes.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  padding: 15px 0;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 10;
+  z-index: 1000;
+}
+
+.navbar .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar .logo h1 {
+  font-size: 1.8rem;
+  color: #f8f9fa;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
+.navbar .logo .logo-icon {
+  color: #6c757d;
+  font-size: 1.5rem;
+  margin-left: 5px;
+  transition: transform 0.3s ease;
+}
+
+.navbar .logo:hover .logo-icon {
+  transform: rotate(15deg);
+}
+
+.navbar .nav-links {
+  display: flex;
+  list-style: none;
+}
+
+.navbar .nav-links li {
+  margin-right: 20px;
+}
+
+.navbar .nav-links li a {
+  color: #f8f9fa;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.navbar .nav-links li a:hover {
+  color: #b5d1ea;
+}
+
+.navbar .nav-links li a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 0;
+  height: 2px;
+  background-color: #3490dc;
+  transition: width 0.3s ease;
+}
+
+.navbar .nav-links li a:hover::after {
+  width: 100%;
+}
+
+.navbar .auth-links a {
+  color: #f8f9fa;
+  font-weight: 500;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-left: 15px;
+  border: 1px solid #3490dc;
+  border-radius: 25px;
+  padding: 5px 15px;
+  transition: all 0.3s ease;
+}
+
+.navbar .auth-links a:hover {
+  text-decoration: none;
+  color: #3490dc;
+  background-color: #f8f9fa;
+}

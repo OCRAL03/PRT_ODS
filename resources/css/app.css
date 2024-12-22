@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background: url('/images/nubes.png') no-repeat center center fixed;
+  background-size: cover;
+}
+
+[x-cloak] {
+    display: none;
+}
+  
