@@ -10,10 +10,12 @@ class Proposal extends Model
     use HasFactory;
 
     protected $fillable = [
+        'title',
+        'description',
         'user_id',
-        'menu_proposal',
     ];
 
+    // Relación con el usuario
     public function user()
     {
         return $this->belongsTo(User::class);

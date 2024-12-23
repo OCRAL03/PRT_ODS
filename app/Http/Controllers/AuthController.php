@@ -29,6 +29,7 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
+            'role' => 'required|in:admin,user', // Validar el campo de rol
         ]);
 
         // Creación del nuevo usuario
@@ -36,14 +37,16 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'usuario', // Asignar rol de usuario
+            'role' => $request->role, // Asignar el rol desde el formulario
         ]);
 
         // Autenticación del usuario recién registrado
         Auth::login($user);
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.index'); // Redireccionar a la vista del administrador
+        }
 
-        // Redireccionar a la página principal
-        return redirect('/');
+        return redirect()->route('user.index'); // Redireccionar al panel de usuario
     }
 
     // Método para manejar el inicio de sesión
