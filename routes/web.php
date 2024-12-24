@@ -16,11 +16,14 @@ Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('regi
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+// Página para invitar a llenar encuestas
+Route::get('/survey', [SurveyController::class, 'index'])->name('survey.index');
+
 // Rutas para usuarios autenticados
 Route::middleware(['auth'])->group(function () {
-    // Página principal de encuestas
-    Route::get('/survey', [SurveyController::class, 'index'])->name('survey.index');
-    Route::post('/survey', [SurveyController::class, 'store'])->name('survey.store');
+    // Formulario de encuestas
+    Route::get('/survey/formulario', [SurveyController::class, 'formulario'])->name('survey.formulario');
+    Route::post('/survey/formulario', [SurveyController::class, 'store'])->name('survey.store');
 
     // Página de propuestas
     Route::get('/proposals', [ProposalController::class, 'index'])->name('proposals.index');
@@ -35,6 +38,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [UserController::class, 'index'])->name('dashboard');
     Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
     Route::put('/profile', [UserController::class, 'update'])->name('user.update');
+    Route::delete('/profile', [UserController::class, 'deleteAccount'])->name('user.delete');
     Route::get('/user', [UserController::class, 'index'])->name('user.index');
 });
 

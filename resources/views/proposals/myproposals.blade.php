@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NutriDatos - Crear Propuesta</title>
+    <title>Mis Propuestas</title>
     @vite('resources/css/app.css')
 </head>
 <body class="bg-white">
@@ -15,8 +15,7 @@
             <h1 class="text-2xl font-bold text-[#2779bd]">NutriDatos</h1>
             <!-- Enlaces de sesión -->
             <div class="space-x-4">
-                <a href="{{ route('login') }}" class="text-[#2779bd] hover:underline text-lg">Inicia sesión</a>
-                <a href="{{ route('register') }}" class="text-[#2779bd] hover:underline text-lg">Regístrate</a>
+                <a href="{{ route('logout') }}" class="text-[#2779bd] hover:underline text-lg">Cerrar sesión</a>
             </div>
         </div>
     </header>
@@ -31,8 +30,8 @@
     </nav>
 
     <!-- Contenido principal -->
-    <div class="container mx-auto py-10 max-w-lg">
-        <h1 class="text-3xl font-bold text-[#2779bd] mb-6">Crear Propuesta</h1>
+    <div class="container mx-auto py-10">
+        <h1 class="text-3xl font-bold text-[#2779bd] mb-6">Mis Propuestas</h1>
 
         <!-- Mensaje de éxito -->
         @if(session('success'))
@@ -41,22 +40,26 @@
             </div>
         @endif
 
-        <!-- Formulario -->
-        <form action="{{ route('proposals.store') }}" method="POST" class="space-y-4">
-            @csrf
-            <div>
-                <label for="title" class="block text-left font-medium text-gray-700">Título</label>
-                <input type="text" id="title" name="title" class="w-full border-gray-300 rounded-lg shadow-sm" required>
-            </div>
-            <div>
-                <label for="description" class="block text-left font-medium text-gray-700">Descripción</label>
-                <textarea id="description" name="description" class="w-full border-gray-300 rounded-lg shadow-sm" required></textarea>
-            </div>
-            <button type="submit" class="bg-[#2779bd] text-white py-2 px-4 rounded-lg hover:bg-[#1c598a]">
-                Enviar Propuesta
-            </button>
-        </form>
+        <!-- Lista de propuestas -->
+        <ul class="space-y-4">
+            @forelse($proposals as $proposal)
+                <li class="border p-4 rounded-lg shadow-md">
+                    <h2 class="font-bold text-lg">{{ $proposal->title }}</h2>
+                    <p class="text-gray-700 mt-2">{{ $proposal->description }}</p>
+                </li>
+            @empty
+                <p>No tienes propuestas creadas.</p>
+            @endforelse
+        </ul>
+
+        <!-- Botón para crear nueva propuesta -->
+        <div class="mt-8">
+            <a href="{{ route('proposals.create') }}" class="bg-[#2779bd] text-white py-2 px-4 rounded-lg hover:bg-[#1c598a]">
+                Crear Nueva Propuesta
+            </a>
+        </div>
     </div>
 
+    @vite('resources/js/app.js')
 </body>
 </html>

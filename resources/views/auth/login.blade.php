@@ -6,11 +6,11 @@
 
         <x-validation-errors class="mb-4" />
 
-        @session('status')
+        @if (session('status'))
             <div class="mb-4 font-medium text-sm text-green-600">
-                {{ $value }}
+                {{ session('status') }}
             </div>
-        @endsession
+        @endif
 
         <form method="POST" action="{{ route('login') }}">
             @csrf
@@ -38,6 +38,8 @@
                         {{ __('¿Olvidaste tu contraseña?') }}
                     </a>
                 @endif
+
+                <input type="hidden" name="redirect" value="{{ request()->query('redirect') }}">
 
                 <x-button class="ms-4">
                     {{ __('Iniciar Sesion') }}

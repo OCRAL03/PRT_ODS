@@ -10,8 +10,12 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
     // Método para mostrar el formulario de inicio de sesión
-    public function showLoginForm()
+    public function showLoginForm(Request $request)
     {
+        // Guardar la página de redirección en la sesión
+        if ($request->has('redirect')) {
+            $request->session()->put('login_redirect', $request->query('redirect'));
+        }
         return view('auth.login');
     }
 
@@ -40,25 +44,27 @@ class AuthController extends Controller
             'role' => $request->role, // Asignar el rol desde el formulario
         ]);
 
-        // Autenticación del usuario recién registrado
-        Auth::login($user);
-        if ($user->role === 'admin') {
-            return redirect()->route('admin.index'); // Redireccionar a la vista del administrador
-        }
-
-        return redirect()->route('user.index'); // Redireccionar al panel de usuario
+        // Redirigir al usuario a la página de inicio de sesión
+        return redirect()->route('login');
     }
 
     // Método para manejar el inicio de sesión
     public function login(Request $request)
     {
+        // Validar los datos de inicio de sesión
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string|min:8',
+        ]);
+
         // Obtener las credenciales del formulario
         $credentials = $request->only('email', 'password');
 
         // Intentar autenticar al usuario
         if (Auth::attempt($credentials)) {
-            // Redireccionar a la página principal en caso de éxito
-            return redirect('/');
+            // Obtener el usuario autenticado
+            $user = Auth::user();
+            return $this->handleRedirect($request, $user);
         }
 
         // Redireccionar de vuelta al formulario con un mensaje de error en caso de fallo
@@ -73,5 +79,27 @@ class AuthController extends Controller
 
         // Redireccionar a la página principal
         return redirect('/');
+    }
+
+    // Método para manejar la redirección después del inicio de sesión o registro
+    protected function handleRedirect(Request $request, User $user)
+    {
+        $redirect = $request->session()->pull('login_redirect', '/');
+
+        if ($user->role === 'admin') {
+            if ($redirect === 'statistics') {
+                return redirect()->route('admin.statistics');
+            }
+            return redirect()->route('admin.index');
+        } else {
+            if ($redirect === 'statistics') {
+                return redirect()->route('user.index');
+            } elseif ($redirect === 'survey') {
+                return redirect()->route('survey.formulario');
+            } elseif ($redirect === 'proposals') {
+                return redirect()->route('proposals.create');
+            }
+            return redirect()->route('user.index');
+        }
     }
 }

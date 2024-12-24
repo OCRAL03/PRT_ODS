@@ -12,27 +12,16 @@ class HomeController extends Controller
         return view('home');
     }
 
-    // Página para invitar a llenar encuestas
-    public function survey()
-    {
-        return view('survey.index');
-    }
-
-    public function proposals()
-    {
-        return view('proposals.index');
-    }
-
     // Redirección para la página de estadísticas según el rol
     public function statisticsRedirect()
     {
         if (auth()->check()) {
             if (auth()->user()->role === 'admin') {
-                return redirect()->route('admin.index');
+                return redirect()->route('admin.statistics');
             } else {
                 return redirect()->route('user.index');
             }
         }
-        return redirect()->route('login');
+        return redirect()->route('login', ['redirect' => 'statistics']);
     }
 }

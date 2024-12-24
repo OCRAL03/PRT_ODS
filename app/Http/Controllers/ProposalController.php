@@ -7,12 +7,6 @@ use App\Models\Proposal;
 
 class ProposalController extends Controller
 {
-    // Asegurar que todas las rutas manejadas por este controlador requieran autenticación
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     // Mostrar formulario para crear una propuesta
     public function create()
     {
@@ -23,12 +17,14 @@ class ProposalController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'proposal_text' => 'required|string',
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
         ]);
 
         Proposal::create([
             'user_id' => auth()->id(),
-            'proposal_text' => $request->proposal_text,
+            'title' => $request->title,
+            'description' => $request->description,
         ]);
 
         return redirect()->route('proposals.my')->with('success', 'Propuesta enviada con éxito.');
@@ -44,7 +40,7 @@ class ProposalController extends Controller
     // Listar todas las propuestas (solo para usuarios autenticados)
     public function index()
     {
-        $proposals = Proposal::all(); // Dependiendo del caso de uso, puedes filtrar las propuestas
+        $proposals = Proposal::all();
         return view('proposals.index', compact('proposals'));
     }
 }

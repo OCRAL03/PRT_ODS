@@ -8,22 +8,28 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100">
+<body class="bg-white">
+
+    <!-- Encabezado superior -->
+    <header class="bg-white shadow-md">
+        <div class="container mx-auto py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-[#2779bd]">NutriDatos</h1>
+            <div class="space-x-4">
+                <a href="{{ route('logout') }}" class="text-[#2779bd] hover:underline text-lg">Cerrar sesión</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navegación -->
+    <nav class="bg-[#2779bd] text-white py-4 shadow-md">
+        <div class="mx-auto flex justify-center space-x-16 text-lg">
+            <a href="{{ route('user.profile') }}" class="hover:underline">Mi Perfil</a>
+            <a href="{{ route('statistics.redirect') }}" class="hover:underline">Gráficos Estadísticos</a>
+        </div>
+    </nav>
 
     <!-- Contenedor principal -->
     <div class="container mx-auto p-6">
-
-        <!-- Barra de navegación -->
-        <div class="bg-blue-700 text-white flex justify-between p-4 rounded-md">
-            <h1 class="text-xl font-bold">NutriDatos <span class="text-sm">&#x1F4CA;</span></h1>
-            <div class="space-x-4">
-                <a href="{{ route('logout') }}" class="text-white hover:underline text-lg">Cerrar sesión</a>
-            </div>
-            <div class="flex gap-6">
-                <a href="{{ route('user.profile') }}" class="font-semibold hover:underline">Mi Perfil</a>
-                <a href="{{ route('statistics.redirect') }}" class="font-semibold hover:underline">Gráficos Estadísticos</a>
-            </div>
-        </div>
 
         <!-- Contenido -->
         <div class="mt-6 grid grid-cols-2 gap-6">
@@ -31,7 +37,7 @@
             <!-- Panel Izquierdo -->
             <div class="bg-white p-6 rounded-md shadow-md">
                 <div class="flex items-center gap-4 mb-4">
-                    <a href="{{ route('survey.index') }}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                    <a href="{{ route('survey.formulario') }}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
                         Responde la encuesta
                     </a>
                     <a href="{{ route('survey.index') }}" class="bg-gray-300 hover:bg-gray-400 text-black font-bold py-2 px-4 rounded">
@@ -43,7 +49,6 @@
                 </div>
                 <div class="border p-4 rounded-md h-80 overflow-y-auto text-gray-500">
                     <!-- Aquí se mostrarán las respuestas de la encuesta -->
-                    <!-- Incluir las respuestas de la encuesta que ya ha respondido el usuario -->
                     @foreach($userSurveys as $survey)
                         <p>{{ $survey->question }}: {{ $survey->answer }}</p>
                     @endforeach
@@ -71,6 +76,17 @@
             <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded">
                 Recomendaciones
             </button>
+        </div>
+
+        <!-- Botón para eliminar cuenta -->
+        <div class="mt-6 flex justify-end">
+            <form action="{{ route('user.delete') }}" method="POST">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded">
+                    Eliminar Cuenta
+                </button>
+            </form>
         </div>
 
     </div>
